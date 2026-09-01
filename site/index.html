@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Normandy &amp; Brittany — Sep 2026</title>
+<title>Normandy &amp; Brittany - Sep 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -64,7 +64,36 @@
   .maps a:hover { border-color: var(--ink); }
   .maps a::after { content: '\2197'; opacity: 0.5; font-size: 11px; }
   .maps-label { font-size: 11px; opacity: 0.55; width: 100%; margin-bottom: -2px; }
+  .stay { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(36,49,63,0.12); }
+  .stay-name { font-size: 13px; font-weight: 500; }
+  .stay-note { font-size: 12px; opacity: 0.7; margin-top: 3px; line-height: 1.5; }
+  .stay-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .stay-links a {
+    font-size: 12px; text-decoration: none; color: var(--ink);
+    border: 1px solid rgba(36,49,63,0.22); border-radius: 999px;
+    padding: 5px 11px; background: rgba(255,255,255,0.7);
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .stay-links a:hover { border-color: var(--ink); }
+  .stay-links a::after { content: '\2197'; opacity: 0.5; font-size: 11px; }
   .card li { margin-bottom: 3px; }
+  .card li.sub {
+    list-style: none; margin-left: -4px; font-size: 13px; opacity: 0.75;
+  }
+  .card li.sub::before { content: '- '; opacity: 0.6; }
+  .weather-row {
+    display: flex; align-items: center; gap: 12px;
+    margin: 10px 0 12px; padding: 10px 13px;
+    background: rgba(36,49,63,0.045);
+    border: 1px solid rgba(36,49,63,0.12);
+    border-radius: 10px;
+  }
+  .weather-icon { font-size: 23px; line-height: 1; flex: none; }
+  .weather-main { display: flex; flex-direction: column; gap: 2px; }
+  .weather-desc { font-size: 13px; font-weight: 500; }
+  .weather-stats { font-size: 12px; opacity: 0.65; }
+  .weather-wind { margin-left: auto; font-size: 11px; opacity: 0.6; text-align: right; flex: none; }
+  .weather-placeholder { font-size: 12.5px; opacity: 0.55; font-style: italic; }
   .btn {
     border: 1px solid var(--ink); border-radius: 8px; padding: 11px 16px;
     font-size: 14px; background: var(--ink); color: var(--paper);
@@ -78,10 +107,22 @@
 </style>
 </head>
 <body>
+
+<div id="landingOverlay" style="position:fixed; inset:0; z-index:999; background-color:var(--paper); background-image:var(--wallpaper); background-size:420px auto; background-repeat:repeat; background-position:top center; display:flex; align-items:center; justify-content:center; transition:opacity 0.6s ease;">
+  <div style="text-align:center; padding:24px;">
+    <div class="h" style="font-style:italic; font-weight:500; font-size:38px; color:#7A2E22; line-height:1;">Normandy</div>
+    <div class="h" style="font-weight:600; font-size:26px; color:#7A2E22; letter-spacing:2px; margin-top:2px;">2026</div>
+    <div style="width:64px; height:1px; background:#7A2E22; opacity:0.4; margin:20px auto 34px;"></div>
+    <div id="cdDays" class="h" style="font-weight:700; font-size:84px; line-height:1; color:var(--ink);">--</div>
+    <div class="mono" style="font-size:13px; color:var(--ink); opacity:0.65; margin-top:8px;">days</div>
+    <div class="mono" style="font-size:13px; color:var(--ink); opacity:0.65; margin-top:2px;">until departure</div>
+  </div>
+</div>
+
 <div class="wrap">
 
-  <div class="veil" style="margin-bottom:16px;">
-    <div class="h" style="font-size:24px; line-height:1.2;">Normandy &amp; Brittany</div>
+  <div style="margin-bottom:16px; padding:4px 2px;">
+    <div class="h" style="font-size:26px; line-height:1.2;">Normandy &amp; Brittany</div>
     <div class="mono" style="font-size:12px; opacity:0.7; margin-top:4px;">17–27 September 2026</div>
   </div>
 
@@ -107,37 +148,118 @@
 
 <script>
 var days = [
-  { day:1, date:"Thu 17/09", base:"Vernon", title:"Arrival → Vernon area",
+  { day:1, date:"Thu 17/09", isoDate:"2026-09-17", base:"Vernon", title:"Arrival → Vernon area",
     items:["Arrive CDG 20:35, pick up rental car","Drive ~1h15 to Vernon area","Late check-in, rest"],
     locations:["CDG","Vernon"] },
-  { day:2, date:"Fri 18/09", base:"Caen", title:"Giverny → Rouen → Caen",
-    items:["Monet's House & Gardens, Giverny","Rouen: lunch, Notre-Dame Cathedral, Gros-Horloge, old town","Abbaye de Jumièges (short detour)","Evening check-in, explore Caen old town and château"],
-    locations:["Giverny","Rouen","Abbaye de Jumièges","Caen"] },
-  { day:3, date:"Sat 19/09", base:"Caen", title:"Zipline + Bagnoles-de-l'Orne",
-    items:["Morning: Skypark Normandie (AJ Hackett) — zip line, swing, bungee","Afternoon: Bagnoles-de-l'Orne-Normandie — lake walk, pedalo, spa town"],
-    locations:["Skypark Normandie","Souleuvre Viaduct","Bagnoles-de-l'Orne"] },
-  { day:4, date:"Sun 20/09", base:"Caen", title:"Cheese, cider & coast loop",
-    items:["Manoir de Grandouet (near Cambremer) — cider, Pommeau, Calvados, own AOP Camembert","Optional: Calvados Pierre Huet or Calvados Dupont","Beuvron-en-Auge — coffee or lunch stop","Honfleur — old harbour","Deauville — beach, Planches boardwalk","Trouville-sur-Mer — seafront"],
-    locations:["Manoir de Grandouet","Cambremer","Beuvron-en-Auge","Honfleur","Deauville","Trouville-sur-Mer"] },
-  { day:5, date:"Mon 21/09", base:"Cherrueix", title:"D-Day beaches → Cherrueix",
-    items:["Omaha Beach","Pointe du Hoc","Checkout, drive to Cherrueix, check in"],
-    locations:["Omaha Beach","Pointe du Hoc","Cherrueix"] },
-  { day:6, date:"Tue 22/09", base:"Cherrueix", title:"Saint-Malo market, Cancale & sunset",
-    items:["Saint-Malo Intra-Muros market (Tue/Fri only)","Cancale — oyster lunch","Evening: Saint-Malo ramparts, sunset walk"],
-    locations:["Saint-Malo","Cancale"] },
-  { day:7, date:"Wed 23/09", base:"Cherrueix", title:"Mont-Saint-Michel & Dol-de-Bretagne",
-    items:["Mont-Saint-Michel — unhurried, 2–3 hours","Dol-de-Bretagne — cathedral, old town"],
+  { day:2, date:"Fri 18/09", isoDate:"2026-09-18", base:"Caen", title:"Giverny → Rouen → Caen",
+    items:["Check out ~09:30, bags in the car","Monet's House & Gardens, Giverny - opens 10:00, allow 2h","Rouen: lunch, Notre-Dame Cathedral, Gros-Horloge, old town","Rouen → Caen (~1h40), arrive ~18:00","Check in, evening in Caen"],
+    locations:["Giverny","Rouen","Caen"] },
+  { day:3, date:"Sat 19/09", isoDate:"2026-09-19", base:"Caen", title:"Pays d'Auge cider route + Caen",
+    items:["Manoir de Grandouet (near Cambremer) - cider, Pommeau, Calvados, own AOP Camembert (Sat 9:00–13:00 / 14:00–18:00; call ahead for an English tour)","Optional: Calvados Pierre Huet or Calvados Dupont","Beuvron-en-Auge - coffee or lunch stop","Back to Caen (~50 min)","Caen afternoon: château, Abbaye aux Hommes, or Mémorial de Caen","Dinner in the Vaugueux quarter"],
+    locations:["Manoir de Grandouet","Cambremer","Beuvron-en-Auge","Caen"] },
+  { day:4, date:"Sun 20/09", isoDate:"2026-09-20", base:"Caen", title:"Étretat, Honfleur & the coast",
+    items:["Leave Caen ~07:45","Étretat - Falaise d'Aval cliff walk (check tide table: the Manneporte walk needs low tide)","Étretat → Honfleur via Pont de Normandie (toll ~€6)","Honfleur - lunch and the old harbour","Deauville - Planches boardwalk, 5 min on foot across the Pont des Belges","Trouville-sur-Mer - seafront"],
+    locations:["Étretat","Honfleur","Deauville","Trouville-sur-Mer","Caen"] },
+  { day:5, date:"Mon 21/09", isoDate:"2026-09-21", base:"Cherrueix", title:"D-Day beaches → Cherrueix",
+    items:["Check out of Caen, bags in the car, depart ~09:00","Caramels d'Isigny, Isigny-sur-Mer - free guided tour Mon–Fri 10:00, live production stops around midday","Pointe du Hoc","Omaha Beach","Drive to Cherrueix, check in"],
+    locations:["Caramels d'Isigny Isigny-sur-Mer","Pointe du Hoc","Omaha Beach","Cherrueix"] },
+  { day:6, date:"Tue 22/09", isoDate:"2026-09-22", base:"Cherrueix", title:"Saint-Malo market, Cancale & Mont-Saint-Michel at dusk",
+    items:["Saint-Malo Intra-Muros market (Tue/Fri only)","Cancale - oyster lunch","Evening: Mont-Saint-Michel - watch the tide from outside, arrive ~16:00-16:30 for the 17:21 high tide"],
+    locations:["Saint-Malo","Cancale","Mont-Saint-Michel"] },
+  { day:7, date:"Wed 23/09", isoDate:"2026-09-23", base:"Cherrueix", title:"Mont-Saint-Michel (inside) & Dol-de-Bretagne",
+    items:["Mont-Saint-Michel - abbey visit, arrive early before tour groups","Dol-de-Bretagne - cathedral, old town"],
     locations:["Mont-Saint-Michel","Dol-de-Bretagne"] },
-  { day:8, date:"Thu 24/09", base:"Cherrueix", title:"Dinan + optional add-on",
-    items:["Dinan — old town, Rue du Jerzual, ramparts, port","Choose on the day: Léhon (quick, riverside), Combourg (château), or Dinard (seaside)"],
-    locations:["Dinan","Léhon","Combourg","Dinard"] },
-  { day:9, date:"Fri 25/09", base:"Paris", title:"Cherrueix → Paris (early departure)",
-    items:["Depart Cherrueix first thing","Brunch stop: Le Mans (or Fougères for something quicker and earlier)","CDG — return rental car by 14:00","Check in Hôtel André Latin, evening free in Paris"],
-    locations:["Le Mans","Fougères","CDG","Paris"] },
-  { day:10, date:"Sat 26/09", base:"Paris", title:"Paris (full day)",
-    items:["Full day in Paris — not yet planned","Evening: transfer to CDG for 23:20 flight"],
-    locations:["Paris","CDG"] }
+  { day:8, date:"Thu 24/09", isoDate:"2026-09-24", base:"Cherrueix", title:"Combourg & Fougères",
+    items:["Combourg - moated château, lake & forest","Fougères - castle, old town"],
+    locations:["Combourg","Fougères"] },
+  { day:9, date:"Fri 25/09", isoDate:"2026-09-25", base:"Paris", title:"Cherrueix → Paris",
+    items:["Depart Cherrueix ~08:00",
+           "CDG - return rental car (14:00 hard deadline, aim to arrive ~13:15)",
+           "RER B → Port-Royal, check in at Hôtel André Latin",
+           "Cédric Grolet boutique, 6 Rue de Castiglione - click-and-collect pickup (counter closes 17:00)",
+           "Walk: Place Vendôme → Rue de la Paix → Palais Garnier",
+           "Galeries Lafayette - dome, store, then rooftop (closes 20:00; sunset ~19:42)",
+           "Dinner: À Côté (9th) - reservation confirmed, 20:00"],
+    locations:["CDG","Hôtel André Latin, 50 Rue Gay-Lussac, Paris","Cédric Grolet, 6 Rue de Castiglione, Paris","Place Vendôme, Paris","Palais Garnier, Paris","Galeries Lafayette Haussmann, Paris","À Côté restaurant, Paris 9e"] },
+  { day:10, date:"Sat 26/09", isoDate:"2026-09-26", base:"Paris", title:"Paris - patisserie & kitchenware crawl",
+    items:["Check out, leave luggage at the hotel",
+           "La Maison d'Isabelle (5th)",
+           "Walk to the Right Bank via Île de la Cité, then Metro to the 11th",
+           "Tapisserie, Rue de Charonne",
+           "Chocolaterie Cyril Lignac, 25 Rue Chanzy",
+           "Marais: Yann Couvreur, Rue des Rosiers (open 08:00–20:00)",
+           "Kitchen shops, in this order - arriving from the Marais:",
+           "• G. Detou, 58 Rue Tiquetonne",
+           "• A. Simon, 48 Rue Montmartre",
+           "• Mora, 13 Rue Montmartre",
+           "• E. Dehillerin, 18 Rue Coquillière (optional - closes 12:30–14:00 for lunch)",
+           "Metro 4 south → La Grande Épicerie Rive Gauche (7th)",
+           "Back to the hotel, collect bags",
+           "CDG - El Al 23:20, aim to arrive 3h before"],
+    locations:["La Maison d'Isabelle, 47ter Boulevard Saint-Germain, Paris","Tapisserie, Rue de Charonne, Paris","Chocolaterie Cyril Lignac, 25 Rue Chanzy, Paris","Yann Couvreur, Rue des Rosiers, Paris","G. Detou, 58 Rue Tiquetonne, Paris","A. Simon, 48 Rue Montmartre, Paris","Mora, 13 Rue Montmartre, Paris","E. Dehillerin, 18 Rue Coquillière, Paris","La Grande Épicerie Rive Gauche, Paris","CDG"] }
 ];
+
+// Weather is fetched once per base town (not per card) and cached by promise,
+// so multiple cards sharing a base (e.g. all Cherrueix days) reuse one request.
+var baseWeatherCoord = {
+  "Vernon":    [49.0917, 1.4836],
+  "Caen":      [49.1829, -0.3707],
+  "Cherrueix": [48.6059, -1.7112],
+  "Paris":     [48.8566, 2.3522]
+};
+var WEATHER_ICON = {
+  0: ['☀', 'Clear'], 1: ['🌤', 'Mostly clear'], 2: ['⛅', 'Partly cloudy'], 3: ['☁', 'Overcast'],
+  45: ['🌫', 'Fog'], 48: ['🌫', 'Fog'],
+  51: ['🌦', 'Drizzle'], 53: ['🌦', 'Drizzle'], 55: ['🌦', 'Drizzle'],
+  56: ['🌦', 'Freezing drizzle'], 57: ['🌦', 'Freezing drizzle'],
+  61: ['🌧', 'Light rain'], 63: ['🌧', 'Rain'], 65: ['🌧', 'Heavy rain'],
+  66: ['🌧', 'Freezing rain'], 67: ['🌧', 'Freezing rain'],
+  71: ['❄', 'Light snow'], 73: ['❄', 'Snow'], 75: ['❄', 'Heavy snow'], 77: ['❄', 'Snow grains'],
+  80: ['🌦', 'Showers'], 81: ['🌦', 'Showers'], 82: ['⛈', 'Heavy showers'],
+  85: ['❄', 'Snow showers'], 86: ['❄', 'Snow showers'],
+  95: ['⛈', 'Thunderstorm'], 96: ['⛈', 'Thunderstorm'], 99: ['⛈', 'Thunderstorm']
+};
+var weatherPromiseCache = {}; // base name -> Promise<daily arrays|null>, session-lived only
+function getWeatherForBase(base){
+  if (weatherPromiseCache[base]) return weatherPromiseCache[base];
+  var c = baseWeatherCoord[base];
+  if (!c) { weatherPromiseCache[base] = Promise.resolve(null); return weatherPromiseCache[base]; }
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + c[0] + '&longitude=' + c[1] +
+    '&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max' +
+    '&timezone=Europe%2FParis&forecast_days=16';
+  weatherPromiseCache[base] = fetch(url)
+    .then(function(res){ if (!res.ok) throw new Error('weather failed'); return res.json(); })
+    .then(function(data){ return data.daily || null; })
+    .catch(function(){ return null; });
+  return weatherPromiseCache[base];
+}
+function renderWeatherInto(el, daily, isoDate){
+  if (!daily || !daily.time){
+    el.innerHTML = '<div class="weather-placeholder">Forecast unavailable right now.</div>';
+    return;
+  }
+  var idx = daily.time.indexOf(isoDate);
+  if (idx === -1){
+    el.innerHTML = '<div class="weather-placeholder">Forecast opens ~16 days before &ndash; check back closer to the trip.</div>';
+    return;
+  }
+  var code = daily.weathercode[idx];
+  var icon = (WEATHER_ICON[code] || ['🌡', 'Weather'])[0];
+  var desc = (WEATHER_ICON[code] || ['🌡', 'Weather'])[1];
+  var hi = Math.round(daily.temperature_2m_max[idx]);
+  var lo = Math.round(daily.temperature_2m_min[idx]);
+  var precip = Math.round(daily.precipitation_probability_max[idx]);
+  var wind = Math.round(daily.windspeed_10m_max[idx]);
+  var windHtml = wind >= 20 ? '<div class="weather-wind mono">' + wind + ' km/h wind</div>' : '';
+  el.innerHTML =
+    '<div class="weather-icon">' + icon + '</div>' +
+    '<div class="weather-main">' +
+      '<div class="weather-desc">' + desc + '</div>' +
+      '<div class="weather-stats mono">' + hi + '&deg; / ' + lo + '&deg;  ·  ' + precip + '% rain</div>' +
+    '</div>' + windHtml;
+}
+
+var stays = {"1": {"name": "Vernon: La Marinière - check-in from 16:00, out 11:00", "book": "https://www.airbnb.com/rooms/559409686750888926", "maps": "https://www.google.com/maps/search/?api=1&query=La%20Marini%C3%A8re%2C%20Vernon%2C%20France"}, "2": {"name": "Caen - maison type loft", "book": "https://www.airbnb.com/l/QryEmF4g", "maps": ""}, "5": {"name": "A Fleur d'Océan, Cherrueix", "book": "https://www.airbnb.com/rooms/1350685159499744078", "maps": "https://www.google.com/maps/search/?api=1&query=48.6059012%2C-1.7112233"}, "9": {"name": "Hôtel André Latin, Paris - 25–26 Sep", "book": "", "maps": "https://www.google.com/maps/search/?api=1&query=H%C3%B4tel%20Andr%C3%A9%20Latin%2C%2050%20Rue%20Gay-Lussac%2C%2075005%20Paris"}, "3": {"name": "Caen - maison type loft", "book": "https://www.airbnb.com/l/QryEmF4g", "maps": ""}, "4": {"name": "Caen - maison type loft", "book": "https://www.airbnb.com/l/QryEmF4g", "maps": ""}, "6": {"name": "A Fleur d'Océan, Cherrueix", "book": "https://www.airbnb.com/rooms/1350685159499744078", "maps": "https://www.google.com/maps/search/?api=1&query=48.6059012%2C-1.7112233"}, "7": {"name": "A Fleur d'Océan, Cherrueix", "book": "https://www.airbnb.com/rooms/1350685159499744078", "maps": "https://www.google.com/maps/search/?api=1&query=48.6059012%2C-1.7112233"}, "8": {"name": "A Fleur d'Océan, Cherrueix", "book": "https://www.airbnb.com/rooms/1350685159499744078", "maps": "https://www.google.com/maps/search/?api=1&query=48.6059012%2C-1.7112233"}};
 
 var activeBases = {};
 var daySelect = document.getElementById('daySelect');
@@ -147,7 +269,7 @@ var emptyEl = document.getElementById('emptyState');
 days.forEach(function(d){
   var o = document.createElement('option');
   o.value = d.day;
-  o.textContent = 'Day ' + d.day + ' — ' + d.date;
+  o.textContent = 'Day ' + d.day + ' - ' + d.date;
   daySelect.appendChild(o);
 });
 
@@ -187,12 +309,63 @@ function render(){
     b.className = 'mono'; b.style.cssText = 'font-size:11px; opacity:0.65;'; b.textContent = d.base;
     head.appendChild(t); head.appendChild(b);
 
+    body.appendChild(head);
+
+    var st = stays[d.day];
+    if (st) {
+      var sw = document.createElement('div');
+      sw.className = 'stay';
+      var sl = document.createElement('div');
+      sl.className = 'maps-label';
+      sl.textContent = 'Staying at';
+      var sn = document.createElement('div');
+      sn.className = 'stay-name';
+      sn.textContent = st.name;
+      sw.appendChild(sl); sw.appendChild(sn);
+      if (st.note) {
+        var no = document.createElement('div');
+        no.className = 'stay-note';
+        no.textContent = st.note;
+        sw.appendChild(no);
+      }
+      var lk = document.createElement('div');
+      lk.className = 'stay-links';
+      if (st.book) {
+        var ab = document.createElement('a');
+        ab.href = st.book; ab.target = '_blank'; ab.rel = 'noopener';
+        ab.textContent = 'Reservation';
+        lk.appendChild(ab);
+      }
+      if (st.maps) {
+        var am = document.createElement('a');
+        am.href = st.maps; am.target = '_blank'; am.rel = 'noopener';
+        am.textContent = 'Directions';
+        lk.appendChild(am);
+      }
+      if (lk.children.length) sw.appendChild(lk);
+      body.appendChild(sw);
+    }
+
+    var weatherRow = document.createElement('div');
+    weatherRow.className = 'weather-row';
+    weatherRow.innerHTML = '<div class="weather-placeholder mono">Checking forecast&hellip;</div>';
+    body.appendChild(weatherRow);
+    getWeatherForBase(d.base).then(function(daily){
+      renderWeatherInto(weatherRow, daily, d.isoDate);
+    });
+
     var ul = document.createElement('ul');
     d.items.forEach(function(it){
       var li = document.createElement('li');
-      li.textContent = it;
+      if (it.indexOf('\u2022 ') === 0) {
+        li.className = 'sub';
+        li.textContent = it.slice(2);
+      } else {
+        li.textContent = it;
+      }
       ul.appendChild(li);
     });
+    body.appendChild(ul);
 
     var maps = document.createElement('div');
     maps.className = 'maps';
@@ -208,8 +381,8 @@ function render(){
       a.textContent = loc;
       maps.appendChild(a);
     });
+    body.appendChild(maps);
 
-    body.appendChild(head); body.appendChild(ul); body.appendChild(maps);
     card.appendChild(stub); card.appendChild(body);
     listEl.appendChild(card);
   });
@@ -239,6 +412,29 @@ document.getElementById('clearLink').addEventListener('click', function(){
 
 render();
 
+</script>
+
+<script>
+(function(){
+  var overlay = document.getElementById('landingOverlay');
+  var target = new Date('2026-09-17T00:00:00');
+  var now = new Date();
+  var daysUntil = Math.ceil((target - now) / 86400000);
+
+  if (daysUntil < 0) {
+    overlay.style.display = 'none';
+    return;
+  }
+
+  document.getElementById('cdDays').textContent = daysUntil;
+
+  setTimeout(function(){
+    overlay.style.opacity = '0';
+    setTimeout(function(){
+      overlay.style.display = 'none';
+    }, 600);
+  }, 6000);
+})();
 </script>
 </body>
 </html>
